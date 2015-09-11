@@ -1,0 +1,65 @@
+<% if @cert %>
+
+  server {
+    listen 443 ssl;
+    ssl on;
+    server_name <%= @app.domain %>;
+
+    ssl_certificate <%= @nginx.cert %>;
+    ssl_certificate_key <%= @nginx.cert_key %>;
+
+    access_log <%= @nginx.log_dir || node.nginx_passenger.log_dir %>/<%= @app.name %>.ssl.access.log <%= @nginx.log_format %>;
+    error_log <%= @nginx.log_dir || node.nginx_passenger.log_dir %>/<%= @app.name %>.ssl.error.log;
+
+    location / {
+      root <%= @app.path %>/public;
+
+      passenger_enabled on;
+      <% if @passenger.ruby %>
+      passenger_ruby <%= @passenger.ruby %>;
+      <% end %>
+      passenger_app_env "<%= node.sharetribe.env %>";
+      passenger_user "<%= @app.user %>";
+
+      passenger_min_instances <%= @nginx.min_instances || node.nginx_passenger.site_min_instances %>;
+      client_max_body_size <%= @nginx.max_body_size || node.nginx_passenger.site_max_body_size %>;
+    }
+  }
+
+  <% if !@nginx.http && @nginx.redirect_to_https %>
+
+  server {
+    listen 80;
+    server_name <%= @app.domain %>;
+    return 301 https://<%= @app.domain %>$request_uri;
+  }
+
+  <% end %>
+
+<% end %> # cert_exists
+
+<% if !@cert || @nginx.http %>
+
+server {
+  listen 80;
+  server_name <%= @app.domain %>;
+
+  access_log <%= @nginx.log_dir || node.nginx_passenger.log_dir %>/<%= @app.name %>.access.log <%= @nginx.log_format %>;
+  error_log <%= @nginx.log_dir || node.nginx_passenger.log_dir %>/<%= @app.name %>.error.log;
+
+  location / {
+    root <%= @app.path %>/public;
+
+    passenger_enabled on;
+    <% if @passenger.ruby %>
+    passenger_ruby <%= @passenger.ruby %>;
+    <% end %>
+    passenger_app_env "<%= node.sharetribe.env %>";
+    passenger_user "<%= @app.user %>";
+
+    passenger_min_instances <%= @nginx.min_instances || node.nginx_passenger.site_min_instances %>;
+    client_max_body_size <%= @nginx.max_body_size || node.nginx_passenger.site_max_body_size %>;
+  }
+}
+
+<% end %>

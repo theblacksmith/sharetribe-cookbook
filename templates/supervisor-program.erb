@@ -1,0 +1,9 @@
+[program:<%= @name %>]
+user=<%= @app.user %>
+directory=<%= @app.path %>
+command=<%= @command %>
+autostart=true
+autorestart=true
+stderr_logfile=<%= @app.path %>/log/<%= @name %>.err.log
+stdout_logfile=<%= @app.path %>/log/<%= @name %>.out.log
+environment=HOME="/home/<%= @app.user %>",USER="<%= @app.user %>"

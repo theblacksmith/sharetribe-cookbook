@@ -1,0 +1,8 @@
+<%= @env %>:
+    adapter: mysql2
+    database: <%= @db.name %>
+    encoding: utf8
+    username: <%= @db.user %>
+    password: <%= @db.password %>
+    host: <%= @db.host %>
+    <%= @db.socket ? "socket: #{@db.socket}" : "" %>
