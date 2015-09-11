@@ -29,7 +29,7 @@ end
 
 # Install bundler
 bash 'Install bundler' do
-  not_if 'which bundle'
+  not_if { File.exists?('/usr/local/bin/bundle') }
   user user
   code "gem install bundler"
   action :run
