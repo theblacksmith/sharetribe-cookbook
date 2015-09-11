@@ -40,7 +40,17 @@ end
 directory "#{app.path}/shared" do
   owner app.user
   group app.group
-  mode '0644'
+  mode '0755'
+  action :create
+end
+
+# STDOUT sync trick
+cookbook_file 'stdout.sync trick' do
+  source 'app/shared/sync-stdout.rb'
+  path "#{app.path}/shared/sync-stdout.rb"
+  owner app.user
+  group app.group
+  mode '0755'
   action :create
 end
 
