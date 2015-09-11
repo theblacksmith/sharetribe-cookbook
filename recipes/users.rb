@@ -8,6 +8,8 @@ app = node[:sharetribe][:app]
 
 group app.group do
   action :create
+  members ['vagrant', 'ubuntu']
+  append true
 end
 
 user app.user do
