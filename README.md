@@ -55,7 +55,7 @@ default[:sharetribe] = {
 
 ### For dependencies
 
-These are attributes configured for included recipes.
+These are the attributes configured by the sharetribe recipes for included recipes.
 
 #### [sphinx](https://supermarket.chef.io/cookbooks/sphinx)
 
@@ -86,39 +86,39 @@ which default 'secret';
 
 Other than that, just add it to your `Cheffile`, or `Berksfile`, or `metadata.rb` or whatever...
 
-cookbook 'sharetribe', git: 'git://github.com/theblacksmith/sharetribe-cookbook.git'
+`cookbook 'sharetribe', git: 'git://github.com/theblacksmith/sharetribe-cookbook.git'`
 
 If you want a ready to use installation, checkout my [Vagrant Sharetribe Box](https://github.com/theblacksmith/vagrant-sharetribe-box)
 
 ### Recipes
 
-#### default
+#### ::default
 
 Runs all the recipes bellow.
 
-#### users
+#### ::users
 
 Creates the user group defined at `node.sharetribe.app.user` and `node.sharetribe.app.group`. Sets up the user home directory and adds any ssh keys to it's `.ssh/authorized_keys` file.
 
-#### prereq
+#### ::prereq
 
 Installs packages and software required to install and run Sharetribe.
 
-#### ruby
+#### ::ruby
 
 Compiles and install at system level **replacing** the current `ruby` the exact version sharetribe uses which is, as of time of writing, `2.1.2`
 
-#### http-server
+#### ::http-server
 
 Installs nginx and passenger and configures a nginx server for the app.
 
-#### database
+#### ::database
 
 If `node.sharetribe.db.install_server` is `true`, installs the database server specified in `node.sharetribe.db.vendor`.
 
 If `node.sharetribe.db.create_db` is `true`, creates a new database with the name specified in `node.sharetribe.db.name`
 
-#### app
+#### ::app
 
 We are getting close!
 
@@ -129,7 +129,7 @@ We are getting close!
 5. Runs `bundle install`
 6. Runs `bundle exec rake db:schema:load`
 
-#### start-app
+#### ::start-app
 
 Fun time!
 
